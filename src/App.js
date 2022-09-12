@@ -1,7 +1,3 @@
-// Importing modules
-//import React,
-//{ useState,useEffect } from "react";
-import logo from './logo.svg';
 import "./App.css";
 
 function App() {
@@ -49,7 +45,7 @@ function App() {
       type: "entry_function_payload",
       function: "0x1::coin::transfer",
       type_arguments: ["0x1::aptos_coin::AptosCoin"],
-      arguments: ["0x10f98dcd5b877d5b5be9c9839222da005de57cd12e887edfa216bf3ed281141c", "1000"]
+      arguments: ["0x9c96ddd0bd37b4b790ca9d256c40e970d02e6fafa69f1dc83fe8dd4dc281ab6e", "1000"]
     };
     const otherOptions = {
       max_gas_amount: '1000',
@@ -64,13 +60,36 @@ function App() {
       .catch(e => console.log('Error', e))
   }
 
+  const sigTransaction = async () => {
+    const payload = {
+      type: "entry_function_payload",
+      function: "0x1::coin::transfer",
+      type_arguments: ["0x1::aptos_coin::AptosCoin"],
+      arguments: ["0x9c96ddd0bd37b4b790ca9d256c40e970d02e6fafa69f1dc83fe8dd4dc281ab6e", "1000"]
+    };
+    const otherOptions = {
+      max_gas_amount: '1000',
+      gas_unit_price: '1',
+      expiration_timestamp_secs: '1646793600',
+      sequence_number: '10'
+    }
+    window.pontem.signAndSubmit(payload, otherOptions)
+      .then(tx => {
+        console.log('Transaction', tx)
+      })
+      .catch(e => console.log('Error', e))
+  }
+
   return (
     <div className="App">
       <button onClick={() => connectwallet()} variant="primary">
         Connect to wallet
       </button>
       <button onClick={() => transaction()} variant="primary">
-        Transaction
+        SignTransaction
+      </button>
+      <button onClick={() => sigTransaction()} variant="primary">
+        SignandSubmitTransaction
       </button>
     </div>
   );
